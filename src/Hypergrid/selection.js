@@ -4,7 +4,11 @@
 
 var Rectangle = require('rectangular').Rectangle;
 
-module.exports = {
+/**
+ * Hypergrid/index.js mixes this module into its prototype.
+ * @mixin
+ */
+exports.mixin = {
     selectionInitialize: function() {
         var grid = this;
 
@@ -167,7 +171,7 @@ module.exports = {
     },
 
     /**
-     * @param {boolean|number[]|string[]} [hiddenColumns=false] - See {@link Hypergrid~getColumns}.
+     * @param {boolean|number[]|string[]} [hiddenColumns=false] - _Per {@link Hypergrid~getColumns}._
      * @returns {{}}
      * @memberOf Hypergrid#
      */
@@ -193,7 +197,7 @@ module.exports = {
     },
 
     /**
-     * @param {boolean|number[]|string[]} [hiddenColumns=false] - See {@link Hypergrid~getColumns}.
+     * @param {boolean|number[]|string[]} [hiddenColumns=false] - _Per {@link Hypergrid~getColumns}._
      * @returns {Array}
      * @memberOf Hypergrid#
      */
@@ -598,18 +602,6 @@ module.exports = {
             this.selectAllRows();
         }
         this.repaint();
-    },
-    isCellSelection: function() {
-        return this.deprecated('isCellSelection()', 'properties.cellSelection', '1.2.2');
-    },
-    isRowSelection: function() {
-        return this.deprecated('isRowSelection()', 'properties.rowSelection', '1.2.2');
-    },
-    isColumnSelection: function() {
-        return this.deprecated('isColumnSelection()', 'properties.columnSelection', '1.2.2');
-    },
-    isSingleRowSelectionMode: function() {
-        return this.deprecated('isSingleRowSelectionMode()', 'properties.singleRowSelectionMode', '1.2.14');
     },
 
     /**

@@ -8,7 +8,7 @@ if (!console.warn) {
     };
 }
 
-var regexIsMethod = /^\w+\(.*\)$/;
+var regexIsMethod = /^[\w\.]+\(.*\)$/;
 
 /**
  * User is warned and new property is returned or new method is called and the result is returned.

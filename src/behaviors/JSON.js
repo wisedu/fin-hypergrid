@@ -127,7 +127,7 @@ var JSON = Behavior.extend('behaviors.JSON', {
     },
 
     hasTreeColumn: function(columnIndex) {
-        return this.grid.properties.showTreeColumn && this.isDrillDown(columnIndex);
+        return this.grid.properties.showTreeColumn && this.dataModel.isDrillDown(columnIndex);
     },
 
     getSelections: function() {

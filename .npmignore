@@ -22,6 +22,5 @@ build
 
 /src/index.js
 /src/module-loader.js
-/src/beahviors/index.js
-/src/dataModels/index.js
+/src/behaviors/index.js
 /src/lib/index.js

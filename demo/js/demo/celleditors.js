@@ -4,7 +4,7 @@
 
 module.exports = function(demo, grid) {
 
-    var idx = grid.behavior.schema;
+    var schema = grid.behavior.schema;
 
     var CellEditor = grid.cellEditors.BaseClass;
     var Textfield = grid.cellEditors.get('textfield');
@@ -85,7 +85,7 @@ module.exports = function(demo, grid) {
         var editorName = declaredEditorName || editorTypes[x % editorTypes.length];
 
         switch (x) {
-            case idx.birthState:
+            case schema.birthState.index:
                 cellEvent.textColor = 'red';
                 break;
         }
@@ -94,11 +94,11 @@ module.exports = function(demo, grid) {
 
         if (cellEditor) {
             switch (x) {
-                case idx.employed:
+                case schema.employed.index:
                     cellEditor = null;
                     break;
 
-                case idx.totalNumberOfPetsOwned:
+                case schema.totalNumberOfPetsOwned.index:
                     cellEditor.input.setAttribute('min', 0);
                     cellEditor.input.setAttribute('max', 10);
                     cellEditor.input.setAttribute('step', 0.01);

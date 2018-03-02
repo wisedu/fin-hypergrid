@@ -937,7 +937,7 @@ var Hypergrid = Base.extend('Hypergrid', {
             this.canvas = canvas;
 
             this.delegateCanvasEvents();
-            this.delegateDataModelEvents();
+            this.delegateDataEvents();
         }
     },
 

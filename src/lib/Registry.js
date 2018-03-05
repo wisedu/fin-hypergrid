@@ -40,7 +40,9 @@ var Registry = Base.extend('Registry', {
             name = undefined;
         }
 
-        name = name || Constructor.prototype.$$CLASS_NAME || Constructor.name; // try Funciton.prototype.name as last resort
+        name = name || Constructor.prototype.$$CLASS_NAME ||
+            Constructor.prototype.name ||
+            Constructor.name; // try Function.prototype.name as last resort
 
         if (!name) {
             throw new this.HypergridError('Expected a registration name.');

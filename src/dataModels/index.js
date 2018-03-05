@@ -1,5 +1,7 @@
 'use strict';
 
+var HypergridError = require('../lib/error');
+
 /**
  * @namespace
  */
@@ -16,6 +18,20 @@ Object.defineProperties(dataModels, {
      */
     add: {
         value: function(name, Constructor) {
+            if (typeof name === 'function') {
+                Constructor = name;
+                name = undefined;
+            }
+
+            name = name ||
+                Constructor.prototype.$$CLASS_NAME ||
+                Constructor.prototype.name ||
+                Constructor.name;
+
+            if (!name) {
+                throw new HypergridError('Cannot register a data model without a name.')
+            }
+
             this[name] = Constructor;
         }
     },

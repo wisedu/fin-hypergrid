@@ -265,14 +265,14 @@ exports.mixin = {
     getSelection: function() {
         var behavior = this.behavior,
             dataModel = behavior.dataModel,
-            rect = normalizeRect(selectionRect),
             selections = this.getSelections(),
             rects = new Array(selections.length);
 
         selections.forEach(getRect);
 
         function getRect(selectionRect, i) {
-            var colCount = rect.extent.x + 1,
+            var rect = normalizeRect(selectionRect),
+                colCount = rect.extent.x + 1,
                 rowCount = rect.extent.y + 1,
                 columns = {};
 

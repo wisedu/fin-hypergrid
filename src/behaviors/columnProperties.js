@@ -329,13 +329,23 @@ createColumnProperties.filterDescriptors = {
             this.filterRenderer = value;
         }
     },
+    editor: {
+        configurable: true,
+        enumerable: true,
+        get: function() {
+            return this.filterEditor;
+        },
+        set: function(value) {
+            this.filterEditor = value;
+        }
+    },
     rightIcon: {
         configurable: true,
         enumerable: true,
         get: function() {
             var result;
             if (this.filterable) {
-                result = this.value.length ? 'filter-on' : 'filter-off';
+                result = this.filter ? 'filter-on' : 'filter-off';
             }
             return result;
         },

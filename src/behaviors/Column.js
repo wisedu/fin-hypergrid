@@ -11,7 +11,7 @@ var images = require('../../images');
 
 /** @summary Create a new `Column` object.
  * @see {@link module:Cell} is mixed into Column.prototype.
- * @mixes cellProperties.mixin
+ * @mixes cellProperties.columnMixin
  * @mixes columnProperties.mixin
  * @constructor
  * @param behavior
@@ -281,8 +281,11 @@ Column.prototype = {
      */
     getCellEditorAt: function(cellEvent) {
         var columnIndex = this.index,
+
             rowIndex = cellEvent.gridCell.y,
+
             editorName = cellEvent.properties.editor,
+
             options = Object.create(cellEvent, {
                 format: {
                     // `options.format` is a copy of the cell's `format` property which is:
@@ -293,6 +296,7 @@ Column.prototype = {
                     value: cellEvent.properties.format
                 }
             }),
+
             cellEditor = this.dataModel.getCellEditorAt(columnIndex, rowIndex, editorName, options);
 
         if (cellEditor && !cellEditor.grid) {
@@ -365,7 +369,7 @@ function resolveCalculator(calculator) {
     return calculators[key];
 }
 
-Column.prototype.mixIn(require('./cellProperties').mixin);
+Column.prototype.mixIn(require('./cellProperties').columnMixin);
 Column.prototype.mixIn(require('./columnProperties').mixin);
 
 module.exports = Column;

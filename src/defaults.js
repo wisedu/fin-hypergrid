@@ -312,6 +312,13 @@ var defaults = {
 
     /**
      * @default
+     * @type {string}
+     * @memberOf module:defaults
+     */
+    filterEditor: 'TextField',
+
+    /**
+     * @default
      * @type {boolean}
      * @memberOf module:defaults
      */

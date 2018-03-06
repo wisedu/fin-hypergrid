@@ -18,8 +18,8 @@ var SelectionModel = require('../lib/SelectionModel');
 var Localization = require('../lib/Localization');
 var Behavior = require('../behaviors/Behavior');
 var behaviorJSON = require('../behaviors/JSON');
-var CellRenderers = require('../cellRenderers');
-var CellEditors = require('../cellEditors');
+var cellRenderers = require('../cellRenderers');
+var cellEditors = require('../cellEditors');
 var modules = require('./modules');
 
 var EDGE_STYLES = ['top', 'bottom', 'left', 'right'],
@@ -106,17 +106,19 @@ var Hypergrid = Base.extend('Hypergrid', {
 
         /**
          * @name cellRenderers
-         * @type {CellRenderer}
+         * @type {Registry}
          * @memberOf Hypergrid#
          */
-        this.cellRenderers = new CellRenderers();
+        this.cellRenderers = cellRenderers;
 
         /**
+         * Private version of cell editors registry with a bound `create` method for use by `getCellEditorAt`.
          * @name cellEditors
-         * @type {CellEditor}
+         * @type {Registry}
          * @memberOf Hypergrid#
          */
-        this.cellEditors = new CellEditors({ grid: this });
+        this.cellEditors = Object.create(cellEditors);
+        Object.defineProperty(this.cellEditors, 'create', { value: createCellEditor.bind(this) });
 
         this.initCanvas(options);
 
@@ -1875,6 +1877,13 @@ function deepClone(object) {
         }
     });
     return result;
+}
+
+function createCellEditor(name, props) {
+    var CellEditor = cellEditors.get(name);
+    if (CellEditor) {
+        return new CellEditor(this, props);
+    }
 }
 
 /**

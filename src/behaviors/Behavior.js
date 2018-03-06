@@ -6,7 +6,7 @@ var Base = require('../Base');
 var dataModel = require('./dataModel');
 var Column = require('./Column');
 var cellEventFactory = require('../lib/cellEventFactory');
-var Features = require('../features');
+var featureRegistry = require('../features');
 var propClassEnum = require('../defaults.js').propClassEnum;
 
 
@@ -77,7 +77,7 @@ var Behavior = Base.extend('Behavior', {
          */
         this.featureMap = {};
 
-        this.featureRegistry = this.featureRegistry || new Features;
+        this.featureRegistry = this.featureRegistry || featureRegistry;
 
         if (this.grid.properties.features) {
             var getFeatureConstructor = this.featureRegistry.get.bind(this.featureRegistry);

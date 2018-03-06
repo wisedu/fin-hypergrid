@@ -7,30 +7,20 @@ var warnedBaseClass;
 
 /**
  * @classdesc Registry of cell editor constructors.
- * @param {Hypergrid} options.grid
- * @param {boolean} [options.private=false] - This instance will use a private registry.
  * @constructor
  */
 var CellEditors = Registry.extend('CellEditors', {
 
     BaseClass: require('./CellEditor'), // abstract base class
 
-    items: {}, // shared cell editor registry (when !options.private)
-
-    initialize: function(options) {
+    initialize: function() {
         // preregister the standard cell editors
-        if (options && options.private || !this.items.celleditor) {
-            this.add(require('./Color'));
-            this.add(require('./Date'));
-            this.add(require('./Number'));
-            this.add(require('./Slider'));
-            this.add(require('./Spinner'));
-            this.add(require('./Textfield'));
-        }
-    },
-
-    construct: function(Constructor, options) {
-        return new Constructor(this.options.grid, options);
+        this.add(require('./Color'));
+        this.add(require('./Date'));
+        this.add(require('./Number'));
+        this.add(require('./Slider'));
+        this.add(require('./Spinner'));
+        this.add(require('./Textfield'));
     },
 
     get: function(name) {
@@ -41,11 +31,14 @@ var CellEditors = Registry.extend('CellEditors', {
             }
             return this.BaseClass;
         }
-        return this.super.get.call(this, name, true);
+        try {
+            var CellEditor = Registry.prototype.get.call(this, name);
+        } catch(err) {
+            // fail silently
+        }
+        return CellEditor;
     }
 
 });
 
-CellEditors.add = Registry.prototype.add.bind(CellEditors);
-
-module.exports = CellEditors;
+module.exports = new CellEditors;

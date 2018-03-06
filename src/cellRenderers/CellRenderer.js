@@ -141,6 +141,4 @@ var CellRenderer = Base.extend('CellRenderer', {
     }
 });
 
-CellRenderer.abstract = true; // don't instantiate directly
-
 module.exports = CellRenderer;

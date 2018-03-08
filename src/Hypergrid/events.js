@@ -339,7 +339,7 @@ var mixin = {
         var grid = this;
 
         function handleMouseEvent(e, cb) {
-            if (grid.getRowCount() === 0) {
+            if (grid.getLogicalRowCount() === 0) {
                 return;
             }
 

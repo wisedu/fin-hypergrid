@@ -33,7 +33,7 @@ var CellEditors = Registry.extend('CellEditors', {
         }
         try {
             var CellEditor = Registry.prototype.get.call(this, name);
-        } catch(err) {
+        } catch (err) {
             // fail silently
         }
         return CellEditor;

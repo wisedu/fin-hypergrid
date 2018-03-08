@@ -954,14 +954,16 @@ var Hypergrid = Base.extend('Hypergrid', {
     /**
      * @memberOf Hypergrid#
      * @desc Switch the cursor for a grid instance.
-     * @param {string} cursorName - A well know cursor name.
+     * @param {string|string[]} cursorName - A well know cursor name.
      * @see [cursor names](http://www.javascripter.net/faq/stylesc.htm)
      */
     beCursor: function(cursorName) {
         if (!cursorName) {
-            cursorName = 'default';
+            cursorName = ['default'];
+        } else if (!Array.isArray(cursorName)) {
+            cursorName = [cursorName];
         }
-        this.div.style.cursor = cursorName;
+        cursorName.forEach(function(name) { this.cursor = name; }, this.div.style);
     },
 
     /**
@@ -1778,6 +1780,22 @@ var Hypergrid = Base.extend('Hypergrid', {
      */
     getHeaderRowCount: function() {
         return this.behavior.getHeaderRowCount();
+    },
+
+    /**
+     * @returns {number} The total number of rows of all subgrids following the data subgrid.
+     * @memberOf Hypergrid#
+     */
+    getFooterRowCount: function() {
+        return this.behavior.getFooterRowCount();
+    },
+
+    /**
+     * @returns {number} The total number of logical rows of all subgrids.
+     * @memberOf Hypergrid#
+     */
+    getLogicalRowCount: function() {
+        return this.behavior.getLogicalRowCount();
     },
 
     hasTreeColumn: function(columnIndex) {

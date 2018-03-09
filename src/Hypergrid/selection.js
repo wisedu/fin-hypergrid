@@ -397,10 +397,14 @@ exports.mixin = {
     },
 
     selectViewportCell: function(x, y) {
-        var headerRowCount = this.getHeaderRowCount();
-        x = this.renderer.visibleColumns[x].columnIndex;
-        if (this.getRowCount() > 0) {
-            y = this.renderer.visibleRows[y + headerRowCount].rowIndex;
+        var vc, vr;
+        if (
+            this.getRowCount() &&
+            (vc = this.renderer.visibleColumns[x]) &&
+            (vr = this.renderer.visibleRows[y + this.getHeaderRowCount()])
+        ) {
+            x = vc.columnIndex;
+            y = vr.rowIndex;
             this.clearSelections();
             this.select(x, y, 0, 0);
             this.setMouseDown(this.newPoint(x, y));
@@ -410,78 +414,87 @@ exports.mixin = {
     },
 
     selectToViewportCell: function(x, y) {
-        var selections = this.getSelections();
-        if (selections && selections.length) {
-            var headerRowCount = this.getHeaderRowCount(),
-                selection = selections[0],
-                origin = selection.origin;
-            x = this.renderer.visibleColumns[x].columnIndex;
-            y = this.renderer.visibleRows[y + headerRowCount].rowIndex;
+        var selections, vc, vr;
+        if (
+            (selections = this.getSelections()) && selections.length &&
+            (vc = this.renderer.visibleColumns[x]) &&
+            (vr = this.renderer.visibleRows[y + this.getHeaderRowCount()])
+        ) {
+            var origin = selections[0].origin;
+            x = vc.columnIndex;
+            y = vr.rowIndex;
             this.setDragExtent(this.newPoint(x - origin.x, y - origin.y));
             this.select(origin.x, origin.y, x - origin.x, y - origin.y);
             this.repaint();
         }
     },
 
-    selectFinalCellOfCurrentRow: function() {
-        var x = this.getColumnCount() - 1,
-            y = this.getSelectedRows()[0],
-            headerRowCount = this.getHeaderRowCount();
-        this.clearSelections();
-        this.scrollBy(this.getColumnCount(), 0);
-        this.select(x, y + headerRowCount, 0, 0);
-        this.setMouseDown(this.newPoint(x, y + headerRowCount));
-        this.setDragExtent(this.newPoint(0, 0));
-        this.repaint();
+    selectToFinalCellOfCurrentRow: function() {
+        this.selectFinalCellOfCurrentRow(true);
     },
 
-    selectToFinalCellOfCurrentRow: function() {
+    selectFinalCellOfCurrentRow: function(to) {
+        if (!this.getRowCount()) {
+            return;
+        }
         var selections = this.getSelections();
         if (selections && selections.length) {
             var selection = selections[0],
                 origin = selection.origin,
                 extent = selection.extent,
                 columnCount = this.getColumnCount();
+
             this.scrollBy(columnCount, 0);
 
             this.clearSelections();
-            this.select(origin.x, origin.y, columnCount - origin.x - 1, extent.y);
+            if (to) {
+                this.select(origin.x, origin.y, columnCount - origin.x - 1, extent.y);
+            } else {
+                this.select(columnCount - 1, origin.y, 0, 0);
+            }
 
             this.repaint();
         }
     },
 
-    selectFirstCellOfCurrentRow: function() {
-        var x = 0,
-            y = this.getSelectedRows()[0],
-            headerRowCount = this.getHeaderRowCount();
-        this.clearSelections();
-        this.setHScrollValue(0);
-        this.select(x, y + headerRowCount, 0, 0);
-        this.setMouseDown(this.newPoint(x, y + headerRowCount));
-        this.setDragExtent(this.newPoint(0, 0));
-        this.repaint();
+    selectToFirstCellOfCurrentRow: function() {
+        this.selectFirstCellOfCurrentRow(true);
     },
 
-    selectToFirstCellOfCurrentRow: function() {
+    selectFirstCellOfCurrentRow: function(to) {
+        if (!this.getRowCount()) {
+            return;
+        }
         var selections = this.getSelections();
         if (selections && selections.length) {
             var selection = selections[0],
                 origin = selection.origin,
                 extent = selection.extent;
+
             this.clearSelections();
-            this.select(origin.x, origin.y, -origin.x, extent.y);
+            if (to) {
+                this.select(origin.x, origin.y, -origin.x, extent.y);
+            } else {
+                this.select(0, origin.y, 0, 0);
+            }
+
             this.setHScrollValue(0);
             this.repaint();
         }
     },
 
     selectFinalCell: function() {
+        if (!this.getRowCount()) {
+            return;
+        }
         this.selectCellAndScrollToMakeVisible(this.getColumnCount() - 1, this.getRowCount() - 1);
         this.repaint();
     },
 
     selectToFinalCell: function() {
+        if (!this.getRowCount()) {
+            return;
+        }
         var selections = this.getSelections();
         if (selections && selections.length) {
             var selection = selections[0],
@@ -491,7 +504,7 @@ exports.mixin = {
 
             this.clearSelections();
             this.select(origin.x, origin.y, columnCount - origin.x - 1, rowCount - origin.y - 1);
-            this.scrollBy(columnCount, rowCount);
+            // this.scrollBy(columnCount, rowCount);
             this.repaint();
         }
     },
@@ -696,15 +709,8 @@ exports.mixin = {
      * @memberOf Hypergrid#
      */
     getGridCellFromLastSelection: function(useAllCells) {
-        var cellEvent,
-            sel = this.selectionModel.getLastSelection();
-
-        if (sel) {
-            cellEvent = new this.behavior.CellEvent;
-            cellEvent.resetGridXDataY(sel.origin.x, sel.origin.y, null, useAllCells);
-        }
-
-        return cellEvent;
+        var sel = this.selectionModel.getLastSelection();
+        return sel && (new this.behavior.CellEvent).resetGridXDataY(sel.origin.x, sel.origin.y, null, useAllCells);
     }
 };
 

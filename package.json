@@ -28,8 +28,6 @@
     "sparse-boolean-array": "1.0.1"
   },
   "devDependencies": {
-    "browserify": "^15.2.0",
-    "css-injector": "^1.1.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-each": "^0.1.1",
@@ -37,13 +35,7 @@
     "gulp-footer": "^1.1.1",
     "gulp-header": "^1.8.2",
     "gulp-imagine-64": "^1.0.1",
-    "gulp-load-plugins": "^1.1.0",
     "gulp-mocha": "^2.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.7",
-    "run-sequence": "^1.1.4",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "run-sequence": "^1.1.4"
   }
 }

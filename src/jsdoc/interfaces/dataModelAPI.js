@@ -219,7 +219,7 @@ Object.setPrototypeOf(DataModel.prototype, DataSourceBase.prototype);
  *
  * Custom data models are not required to implement them if they don't need them.
  *
- * If implemented, Hypergrid makes a single call to `setMetadataStore` when data model is reset (see {@link Behavior#resetDataModel}) with no arguments. Therefore this method needs to expect a no-arg overload and handle it appropriately.
+ * If implemented, Hypergrid makes a single call to `setMetadataStore` when data model is reset (see {@link Local#resetDataModel}) with no arguments. Therefore this method needs to expect a no-arg overload and handle it appropriately.
  *
  * Hypergrid never calls `getMetadataStore`.
  * #### Parameters:
@@ -250,7 +250,7 @@ Object.setPrototypeOf(DataModel.prototype, DataSourceBase.prototype);
  *
  * Custom data models are not required to implement them if they don't need them.
  *
- * Hypergrid never calls `getMetadataStore` itself. If implemented, Hypergrid does make a single call to `setMetadataStore` when data model is reset (see {@link Behavior#resetDataModel}) with no arguments.
+ * Hypergrid never calls `getMetadataStore` itself. If implemented, Hypergrid does make a single call to `setMetadataStore` when data model is reset (see {@link Local#resetDataModel}) with no arguments.
  *
  * @returns Metadata store object.
  */

@@ -3,7 +3,6 @@
 var Point = require('rectangular').Point;
 
 var Base = require('../Base');
-var dataModel = require('./dataModel');
 var Column = require('./Column');
 var cellEventFactory = require('../lib/cellEventFactory');
 var featureRegistry = require('../features');
@@ -25,7 +24,6 @@ var noExportProperties = [
  * @mixes cellProperties.behaviorMixin
  * @mixes rowProperties.mixin
  * @mixes subgrids.mixin
- * @mixes dataModel.mixin
  * @constructor
  * @desc A controller for the data model.
  * > This constructor (actually `initialize`) will be called upon instantiation of this class or of any class that extends from this class. See {@link https://github.com/joneit/extend-me|extend-me} for more info.
@@ -1131,10 +1129,9 @@ Behavior.prototype.applyAnalytics = Behavior.prototype.reindex;
 
 
 // mix-ins
-Behavior.prototype.mixIn(dataModel.mixin);
 Behavior.prototype.mixIn(require('./rowProperties').mixin);
 Behavior.prototype.mixIn(require('./cellProperties').behaviorMixin);
-Behavior.prototype.mixIn(require('./dataModel/subgrids').mixin);
+Behavior.prototype.mixIn(require('./subgrids').mixin);
 
 
 module.exports = Behavior;

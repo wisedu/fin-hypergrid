@@ -32,7 +32,7 @@ function assignProps(cellEvent) {
             break;
         case CELLS:
             i = 1; // skip cell prop layer
-            base = cellEvent.properties; // because cell has column props as prototype
+            base = props; // because cell has column props as prototype
             break;
         default:
             i = 0; // all prop layers

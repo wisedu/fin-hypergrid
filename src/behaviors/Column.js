@@ -95,12 +95,16 @@ Column.prototype = {
      * @desc The _header_ is the label at the top of the column.
      *
      * Setting the header updates both:
-     * * the `fields` (aka, header) array in the underlying data source; and
+     * * the `schema` (aka, header) array in the underlying data source; and
      * * the filter.
      * @type {string}
      */
     set header(headerText) {
-        this.schema.header = headerText;
+        if (headerText === undefined) {
+            delete this.schema.header;
+        } else {
+            this.schema.header = headerText;
+        }
         this.behavior.grid.repaint();
     },
     get header() {
@@ -115,13 +119,18 @@ Column.prototype = {
      * @type {string}
      */
     set calculator(calculator) {
-        calculator = resolveCalculator.call(this, calculator);
-        if (calculator !== this.schema.calculator) {
-            if (calculator === undefined) {
-                delete this.schema.calculator;
-            } else {
-                this.schema.calculator = calculator;
+        if (calculator) {
+            calculator = resolveCalculator.call(this, calculator);
+            if (calculator !== this.schema.calculator) {
+                if (calculator === undefined) {
+                    delete this.schema.calculator;
+                } else {
+                    this.schema.calculator = calculator;
+                }
+                this.behavior.reindex();
             }
+        } else if (this.schema.calculator) {
+            delete this.schema.calculator;
             this.behavior.reindex();
         }
     },
@@ -137,7 +146,11 @@ Column.prototype = {
      * @type {string}
      */
     set type(type) {
-        this.schema.type = type;
+        if (type === undefined) {
+            delete this.schema.type;
+        } else {
+            this.schema.type = type;
+        }
         this.behavior.reindex();
     },
     get type() {

@@ -7,10 +7,10 @@
  */
 function createColumnProperties() {
     var column = this,
-        tableState = column.behavior.grid.properties,
+        gridProps = column.behavior.grid.properties,
         properties;
 
-    properties = Object.create(tableState, {
+    properties = Object.create(gridProps, {
 
         index: { // read-only (no setter)
             get: function() {
@@ -42,7 +42,8 @@ function createColumnProperties() {
             },
             set: function(header) {
                 if (this !== column.properties) {
-                    tableState.header = header; // throws an error
+                    // trying to set a cell header
+                    gridProps.header = header; // throw same error as when trying to set a grid header
                 }
                 column.header = header;
             }
@@ -54,7 +55,8 @@ function createColumnProperties() {
             },
             set: function(type) {
                 if (this !== column.properties) {
-                    tableState.type = type; // throws an error
+                    // trying to set a cell type
+                    gridProps.type = type; // throw same error as when trying to set a grid type
                 }
                 column.type = type;
             }
@@ -66,19 +68,65 @@ function createColumnProperties() {
             },
             set: function(calculator) {
                 if (this !== column.properties) {
-                    tableState.calculator = calculator; // throws an error
+                    // trying to set a cell calculator
+                    gridProps.calculator = calculator; // throw same error as when trying to set a grid calculator
                 }
                 column.calculator = calculator;
             }
         },
 
+        format: {
+            get: function() {
+                return 'format' in column.schema ? column.schema.format : gridProps.format;
+            },
+            set: function(format) {
+                if (this !== column.properties) {
+                    // set on instance to override this accessor (could be cell props obj or anon obj created by renderer)
+                    Object.defineProperty(this, 'format', {
+                        enumerable: true,
+                        configurable: true,
+                        writable: true,
+                        value: format
+                    });
+                } else if (format === undefined) {
+                    delete column.schema.format; // remove column prop to so getter returns grid prop
+                } else {
+                    column.schema.format = format;
+                }
+            }
+        },
+
+        renderer: {
+            get: function() {
+                return 'renderer' in column.schema ? column.schema.renderer : gridProps.renderer;
+            },
+            set: function(renderer) {
+                if (this !== column.properties) {
+                    // set on instance to override this accessor (could be cell props obj or anon obj created by renderer)
+                    Object.defineProperty(this, 'renderer', {
+                        enumerable: true,
+                        configurable: true,
+                        writable: true,
+                        value: renderer
+                    });
+                } else if (renderer === undefined) {
+                    delete column.schema.renderer; // remove column prop to so getter returns grid prop
+                } else {
+                    column.schema.renderer = renderer;
+                }
+            }
+        },
+
         toJSON: {
-            // although we don't generally want header, type, and calculator to be enumerable, we do want them to be serializable
+            // although we don't generally want these to be enumerable, we do want them to be serializable
+            // todo: ??? not sure now (3/13/2018) why these shouldn't be enumerable
             value: function() {
                 return Object.assign({
                     header: this.header,
                     type: this.type,
-                    calculator: this.calculator
+                    calculator: this.calculator,
+                    format: this.format,
+                    renderer: this.renderer
                 }, this);
             }
         }

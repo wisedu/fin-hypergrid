@@ -24,6 +24,13 @@ gulp.task('css-templates', function() {
 
 gulp.task('build', function(callback) {
     clearBashScreen();
+    console.log(
+        'As of 3.0.0, this gulpfile no longer bundles Hypergrid + Hypergrid.require into a build folder.\n' +
+        'That task has been moved to a new repo, fin-hypergrid-bundle, which also hosts the demos.\n' +
+        'This gulpfile now only runs the linter, and the pre-processors that "bakes in" the images\n' +
+        'and stylesheets, and runs the tests (if any). The doc task is still available (on demand).\n' +
+        'The watch task has been removed.\n'
+    );
     runSequence(
         'lint',
         'images',

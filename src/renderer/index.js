@@ -1406,6 +1406,8 @@ function computeCellsBounds(callback) {
     if (this.grid.behavior.dataModel.fetchData) {
         var rectangles = this.grid.fetchSubregions ? getSubregions.call(this) : [this.dataWindow];
         this.grid.behavior.dataModel.fetchData(rectangles, callback);
+    } else {
+        callback();
     }
 }
 

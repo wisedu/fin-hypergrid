@@ -2,6 +2,9 @@
 
 var RangeSelectionModel = require('sparse-boolean-array');
 
+var SelectionRectangle = require('./SelectionRectangle');
+
+
 /**
  *
  * @constructor
@@ -109,7 +112,7 @@ SelectionModel.prototype = {
      * @param {boolean} silent - whether to fire selection changed event
      */
     select: function(ox, oy, ex, ey, silent) {
-        var newSelection = this.grid.newRectangle(ox, oy, ex, ey);
+        var newSelection = new SelectionRectangle(ox, oy, ex, ey);
 
         //Cache the first selected cell before it gets normalized to top-left origin
         newSelection.firstSelectedCell = this.grid.newPoint(ox, oy);
@@ -456,7 +459,7 @@ SelectionModel.prototype = {
         var set = {};
         this.selections.forEach(function(selection) {
             var top = selection.origin.y;
-            var size = selection.extent.y + 1;
+            var size = selection.height;
             for (var r = 0; r < size; r++) {
                 var ti = r + top;
                 if (!set[ti]) {

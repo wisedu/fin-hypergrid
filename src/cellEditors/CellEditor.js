@@ -307,10 +307,10 @@ var CellEditor = Base.extend('CellEditor', {
     checkIsIe9: function() {
         var isIe9 = false;
         var browser = navigator.appName;
-        var b_version = navigator.appVersion;
-        var version = b_version.split(';');
-        var trim_Version = version[1].replace(/[ ]/g, '');
-        if (browser === 'Microsoft Internet Explorer' && trim_Version === 'MSIE9.0') {
+        var bversion = navigator.appVersion;
+        var version = bversion.split(';');
+        var trimVersion = version[1].replace(/[ ]/g, '');
+        if (browser === 'Microsoft Internet Explorer' && trimVersion === 'MSIE9.0') {
             isIe9 = true;
         }
         return isIe9;
@@ -318,10 +318,10 @@ var CellEditor = Base.extend('CellEditor', {
     checkIsIe10: function() {
         var isIe10 = false;
         var browser = navigator.appName;
-        var b_version = navigator.appVersion;
-        var version = b_version.split(';');
-        var trim_Version = version[1].replace(/[ ]/g, '');
-        if (browser === 'Microsoft Internet Explorer' && (trim_Version === 'MSIE10.0')) {
+        var bversion = navigator.appVersion;
+        var version = bversion.split(';');
+        var trimVersion = version[1].replace(/[ ]/g, '');
+        if (browser === 'Microsoft Internet Explorer' && (trimVersion === 'MSIE10.0')) {
             isIe10 = true;
         }
         return isIe10;

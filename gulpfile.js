@@ -13,7 +13,7 @@ var srcDir = './src/',
 
 //  //  //  //  //  //  //  //  //  //  //  //
 
-// gulp.task('lint', lint);
+gulp.task('lint', lint);
 gulp.task('test', test);
 gulp.task('doc', doc);
 gulp.task('images', swallowImages);
@@ -25,7 +25,7 @@ gulp.task('css-templates', function() {
 gulp.task('build', function(callback) {
     clearBashScreen();
     runSequence(
-        // 'lint',
+        'lint',
         'images',
         'css-templates',
         'test',
@@ -116,6 +116,7 @@ function templates(src, type) {
                 .replace(/\\/g, "\\\\") // escape all backslashes
                 .replace(/'/g, "\\'") // escape all single-quotes
                 .replace(/\n/g, "',\n'") + "'\n].join('\\n');\n";
+            // .replace(/\n/g, "',\n'") + "'\n].join('\\n');\n";
 
             // remove possible blank line at end of each
             content = content.replace(/,\n''\n]/g, "\n]");

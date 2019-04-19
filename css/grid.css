@@ -11,8 +11,8 @@
 }
 .hypergrid-container > div:first-child > div.info {
     position: absolute;
-    display: none; /* initially hidden */
-    margin-top: 150px; /* to place below headers */
+    display: none;
+    margin-top: 150px;
     color: #eee;
     text-shadow: 1px 1px #ccc;
     font-size: 36pt;
@@ -28,7 +28,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0 5px;
-    border: 0; /*border: 1px solid #777;*/
+    border: 0;
     outline: 0;
 }
 

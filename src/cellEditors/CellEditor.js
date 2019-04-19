@@ -125,8 +125,7 @@ var CellEditor = Base.extend('CellEditor', {
 
         // STEP 2: If this is a possible "nav key" consumable by CellSelection#handleKeyDown, try to stop editing and send it along
         if (cellProps.mappedNavKey(keyChar, e.ctrlKey)) {
-            if (
-                !specialKeyup &&
+            if (!specialKeyup &&
                 // We didn't try to stop editing above so try to stop it now
                 (stopped = this.stopEditing(feedbackCount))
             ) {
@@ -275,7 +274,11 @@ var CellEditor = Base.extend('CellEditor', {
         if (!error) {
             this.hideEditor();
             this.grid.cellEditor = null;
-            this.el.remove();
+            if (this.checkIsIe9() || this.checkIsIe10() || this.checkIsIe11()) {
+                this.el.removeNode(true);
+            } else {
+                this.el.remove();
+            }
         } else if (feedback >= 0) { // false when `feedback` undefined
             this.errorEffectBegin(++this.errors % feedback === 0 && error);
         } else { // invalid but no feedback
@@ -292,12 +295,42 @@ var CellEditor = Base.extend('CellEditor', {
         this.setEditorValue(this.initialValue);
         this.hideEditor();
         this.grid.cellEditor = null;
-        this.el.remove();
+        if (this.checkIsIe9() || this.checkIsIe10() || this.checkIsIe11()) {
+            this.el.removeNode(true);
+        } else {
+            this.el.remove();
+        }
         this.grid.takeFocus();
 
         return true;
     },
+    checkIsIe9: function() {
+        var isIe9 = false;
+        var browser = navigator.appName;
+        var b_version = navigator.appVersion;
+        var version = b_version.split(';');
+        var trim_Version = version[1].replace(/[ ]/g, '');
+        if (browser === 'Microsoft Internet Explorer' && trim_Version === 'MSIE9.0') {
+            isIe9 = true;
+        }
+        return isIe9;
+    },
+    checkIsIe10: function() {
+        var isIe10 = false;
+        var browser = navigator.appName;
+        var b_version = navigator.appVersion;
+        var version = b_version.split(';');
+        var trim_Version = version[1].replace(/[ ]/g, '');
+        if (browser === 'Microsoft Internet Explorer' && (trim_Version === 'MSIE10.0')) {
+            isIe10 = true;
+        }
+        return isIe10;
+    },
 
+    checkIsIe11: function() {
+        var isIe11 = navigator.userAgent.toLowerCase().match(/rv:([\d.]+)\) like gecko/);
+        return isIe11;
+    },
     /**
      * Calls the effect function indicated in the {@link module:defaults.feedbackEffect|feedbackEffect} property, which triggers a series of CSS transitions.
      * @param {boolean|string|Error} [error] - If defined, call the {@link CellEditor#errorEffectEnd|errorEffectEnd} method at the end of the last effect transition with this error.
@@ -350,7 +383,7 @@ var CellEditor = Base.extend('CellEditor', {
                 msg += '\n\nAdditional information about this error: ' + error;
             }
 
-            setTimeout(function() { // allow animation to complete
+            setTimeout(function() { // allow animation to compvare
                 alert(msg); // eslint-disable-line no-alert
             });
         }
@@ -363,8 +396,7 @@ var CellEditor = Base.extend('CellEditor', {
      * @memberOf CellEditor.prototype
      */
     saveEditorValue: function(value) {
-        var save = (
-            !(value && value === this.initialValue) && // data changed
+        var save = (!(value && value === this.initialValue) && // data changed
             this.grid.fireBeforeCellEdit(this.event.gridCell, this.initialValue, value, this) // proceed
         );
 
@@ -415,7 +447,8 @@ var CellEditor = Base.extend('CellEditor', {
 
         el.style.left = el.style.top = 0; // work-around: move to upper left
 
-        var x = window.scrollX, y = window.scrollY;
+        var x = window.pageXOffset,
+            y = window.pageYOffset;
         this.input.focus();
         window.scrollTo(x, y);
         this.selectAll();
@@ -472,7 +505,10 @@ var CellEditor = Base.extend('CellEditor', {
 });
 
 function nullPattern() {}
-function px(n) { return n + 'px'; }
+
+function px(n) {
+    return n + 'px';
+}
 
 
 module.exports = CellEditor;

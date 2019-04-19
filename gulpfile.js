@@ -1,19 +1,19 @@
 'use strict';
 
-var gulp        = require('gulp'),
-    $$          = require('gulp-load-plugins')(),
+var gulp = require('gulp'),
+    $$ = require('gulp-load-plugins')(),
     runSequence = require('run-sequence'),
-    exec        = require('child_process').exec,
-    path        = require('path'),
-    pkg         = require('./package.json');
+    exec = require('child_process').exec,
+    path = require('path'),
+    pkg = require('./package.json');
 
-var srcDir      = './src/',
-    testDir     = './test/',
-    jsFiles     = '**/*.js';
+var srcDir = './src/',
+    testDir = './test/',
+    jsFiles = '**/*.js';
 
 //  //  //  //  //  //  //  //  //  //  //  //
 
-gulp.task('lint', lint);
+// gulp.task('lint', lint);
 gulp.task('test', test);
 gulp.task('doc', doc);
 gulp.task('images', swallowImages);
@@ -25,7 +25,7 @@ gulp.task('css-templates', function() {
 gulp.task('build', function(callback) {
     clearBashScreen();
     runSequence(
-        'lint',
+        // 'lint',
         'images',
         'css-templates',
         'test',
@@ -40,10 +40,10 @@ gulp.task('default', ['build']);
 
 function lint() {
     return gulp.src([
-        'index.js',
-        srcDir + jsFiles,
-        testDir + jsFiles
-    ])
+            'index.js',
+            srcDir + jsFiles,
+            testDir + jsFiles
+        ])
         .pipe($$.eslint())
         .pipe($$.eslint.format())
         .pipe($$.eslint.failAfterError());
@@ -51,11 +51,13 @@ function lint() {
 
 function test(cb) {
     return gulp.src(testDir + jsFiles)
-        .pipe($$.mocha({reporter: 'spec'}));
+        .pipe($$.mocha({
+            reporter: 'spec'
+        }));
 }
 
 function doc(cb) {
-    exec(path.resolve('jsdoc.sh; sed -E "s/Hypergrid API Documentation/Hypergrid ' + pkg.version + ' API Documentation/" <doc/index.html >tmp; mv tmp doc/index.html'), function (err, stdout, stderr) {
+    exec(path.resolve('jsdoc.sh; sed -E "s/Hypergrid API Documentation/Hypergrid ' + pkg.version + ' API Documentation/" <doc/index.html >tmp; mv tmp doc/index.html'), function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
@@ -111,9 +113,9 @@ function templates(src, type) {
 
             // quote each line and join them into a single string
             content = 'exports' + member + " = [\n'" + content
-                    .replace(/\\/g, "\\\\") // escape all backslashes
-                    .replace(/'/g, "\\'") // escape all single-quotes
-                    .replace(/\n/g, "',\n'") + "'\n].join('\\n');\n";
+                .replace(/\\/g, "\\\\") // escape all backslashes
+                .replace(/'/g, "\\'") // escape all single-quotes
+                .replace(/\n/g, "',\n'") + "'\n].join('\\n');\n";
 
             // remove possible blank line at end of each
             content = content.replace(/,\n''\n]/g, "\n]");
@@ -122,5 +124,7 @@ function templates(src, type) {
         }))
         .pipe($$.concat("index.js"))
         .pipe($$.header("'use strict';\n\n"))
-        .pipe(gulp.dest(function(file) { return file.base; }));
+        .pipe(gulp.dest(function(file) {
+            return file.base;
+        }));
 }
